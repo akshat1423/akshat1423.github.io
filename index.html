@@ -243,13 +243,13 @@ margin-top: 20px !important;
 }
  .card .text-container #head1 {
 	 font-family: 'Nobile', sans-serif;
-	 font-size: 1.5em;
+	 font-size: 1em;
 	 margin: 10px auto 10px auto;
 }
 
  .card .text-container #head2 {
 	 font-family: 'Nobile', sans-serif;
-	 font-size: 1.5em;
+	 font-size: 1em;
 margin-top: -45px !important;
 	 margin: 10px auto 10px auto;
 }
@@ -372,10 +372,83 @@ margin-top: -45px !important;
 img {
 
     width: 100%;}
+	
+	.score-container {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  font-size: 24px;
+  color: white;
+}
+
+.score-container #score {
+  font-weight: bold;
+}
+.score-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 80px;
+  background-color: #f5f5f5;
+  border: 2px solid #333;
+  border-radius: 8px;
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  z-index: 999;
+}
+
+.balloon:hover {
+  transition: transform 1s ease-out;
+  transform: translate(calc(100vw - var(--x)), calc(100vh - var(--y)));
+}
+
+.congrats {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffbb00;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 36px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -60%) scale(1.2);
+  }
+}
+#spaghetti {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background-image: url('https://i.imgur.com/nvO1iIi.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  transition: all 0.5s ease-in-out;
+}
+
 </style>
 </head>
 
-
+<div id="spaghetti"></div>
+<div class="score-container">
+	Score: <span id="score">0</span>
+  </div><br><br>
 
 <audio id="Tanav" src="https://jennierubyjanenini.github.io/Music-K-Files/happy%20birthday%20to%20you%20female%20voice%20wishes.mp3">
 </audio>
@@ -385,10 +458,10 @@ img {
 <img src="https://t3.ftcdn.net/jpg/02/69/25/14/360_F_269251443_GyDzLBFbj3f5vr6JdyXtT2tI91HwjsEq.jpg"></img>
 
 
-<button id="Date" onclick="SetDate()">
+<button id="Date" style="margin-top: 100px;" onclick="SetDate()">
 
-	Click me!
-
+	Click me! 
+#before opening the card
 </button>
 
 <br><br><br><br><br><br><br>
@@ -401,7 +474,7 @@ img {
   </div>
   <div class="text-container">
     <p id="head">Happy Birthday</p><p id="head2"> जन्मदिन की शुभकामनाएँ! </p><p id="head1">joyeux anniversaire </p><p id="head1">с днем ​​рождения</p>
-    <p>I hope your special day will bring you lots of happiness, love, and fun. You deserve them a lot. Enjoy!</p>
+    <p>I wish you in all the languages I know , I hope your special day will bring you lots of happiness, love, and fun. You deserve them a lot. (Minecraft kam khelna is saal) Enjoy!</p>
     <p>Hope your day goes great!</p>
   </div>
 </div>
@@ -417,11 +490,11 @@ img {
 Your browser does not support the video tag.
 </video>
 
-<button id="Date" style="margin-top:100px; margin-bottom:50px;"onclick="window.location.href='./game.html';">
+<!-- <button id="Date" style="margin-top:100px; margin-bottom:50px;"onclick="window.location.href='./game.html';">
 
 	Game(play after scrolling whole page)!
 
-</button>
+</button> -->
 
 	<div>
 
@@ -435,18 +508,66 @@ Your browser does not support the video tag.
 function SetDate() {
 	document.getElementById("Tanav").play();
 }
+function myFunction(event) {
+  // Get a reference to the clicked balloon
+  const clickedBalloon = event.target;
+
+  // Hide the clicked balloon by setting its display property to none
+  clickedBalloon.style.display = "none";
+}
+
+function createSpaghetti() {
+  const spaghettiElement = document.createElement("div");
+  spaghettiElement.id = "spaghetti";
+  spaghettiElement.style.left = Math.random() * (window.innerWidth - 60) + "px";
+  spaghettiElement.style.top = Math.random() * (window.innerHeight - 60) + "px";
+  document.body.append(spaghettiElement);
+  setTimeout(() => {
+    spaghettiElement.remove();
+  }, 10000);
+}
 const bdayBallons = (function(){
-    const density = 7; // concurrent balloon count
+    const density = 20; // concurrent balloon count
     const balloons = []; 
     const colors = ['yellow', 'green', 'blue', 'red'];
+    let counter = 0;
+
+	
+
 
     const stringElement = document.createElement("div");
     stringElement.classList.add("string");
+
+    const scoreElement = document.getElementById("score");
 
     for (let i = 0; i < density; i++) {
         const element = document.createElement("div");
         element.classList.add("balloon");
         element.classList.add(randomColor());
+        element.id = "balls";
+        element.onclick = function() {
+            this.style.visibility = "hidden";
+            counter++;
+            scoreElement.innerText = counter;
+			if (counter >= 10 ) {
+				console.log("hello")
+    // Display a congratulatory message or animation
+    const congratsElement = document.createElement("div");
+    congratsElement.classList.add("congrats");
+    congratsElement.textContent = "Congratulations!"+"\nBecause you also became 10!";
+    document.body.append(congratsElement);
+    setTimeout(() => {
+   
+	  congratsElement.remove();
+      createSpaghetti();
+    }, 3000);
+  }
+
+
+
+
+
+        };
 
         element.append(stringElement.cloneNode());
         document.body.append(element);
@@ -455,6 +576,8 @@ const bdayBallons = (function(){
             releaseBalloon(element);
         }, (i * 2000) + random(500, 1000));
     }
+
+	
 
 
     function randomColor() {
